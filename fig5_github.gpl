@@ -1,0 +1,16 @@
+
+# Gnuplot script (GitHub-ready)
+# User must set DATA_PATH before running
+
+DATA_PATH = system("echo ${DATA_PATH:-.}")
+
+set terminal pdfcairo enhanced font "Arial,12"
+set output DATA_PATH."/fig5_output.pdf"
+
+set xlabel "Diffusion Coefficient"
+set ylabel "Peak Infected Area"
+set grid
+
+plot DATA_PATH."/peak_data.txt" using 1:2 with linespoints lw 2 pt 7 title "Peak I"
+
+unset output

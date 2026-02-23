@@ -1,0 +1,16 @@
+
+# Gnuplot script (GitHub-ready)
+# User must set DATA_PATH before running
+
+DATA_PATH = system("echo ${DATA_PATH:-.}")
+
+set terminal pdfcairo enhanced font "Arial,12"
+set output DATA_PATH."/fig2_output.pdf"
+
+set xlabel "Time"
+set ylabel "Infected Area"
+set grid
+
+plot DATA_PATH."/region.txt" using 1:2 with lines lw 2 title "Infected Area",      DATA_PATH."/region.txt" using 1:3 with lines lw 2 dt 2 title "Susceptible Area"
+
+unset output
