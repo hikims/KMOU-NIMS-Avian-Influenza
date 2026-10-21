@@ -1,0 +1,27 @@
+model fixed
+L 14
+D 0.009
+dx 0.08
+dt 0.004
+T 400
+Nx 175
+r0 0.5
+eps 1
+k1 1
+massI_final 31.2679951081
+massS_final 164.7677501606
+maxI_final 0.5071116482
+PR_final 0.5143182218
+var_final 2.403299115405e-02
+theta 0.005 peak_area 192.006400 peak_time 400.0000 final_area 192.006400
+theta 0.01 peak_area 182.880000 peak_time 400.0000 final_area 182.880000
+theta 0.02 peak_area 168.537600 peak_time 400.0000 final_area 168.537600
+theta 0.05 peak_area 130.560000 peak_time 400.0000 final_area 130.560000
+theta 0.1 peak_area 92.467200 peak_time 400.0000 final_area 92.467200
+theta 0.2 peak_area 61.158400 peak_time 399.6000 final_area 61.158400
+theta 0.3 peak_area 42.931200 peak_time 398.2000 final_area 42.931200
+theta 0.4 peak_area 29.004800 peak_time 288.2000 final_area 27.340800
+theta 0.5 peak_area 19.200000 peak_time 159.4000 final_area 1.817600
+theta 0.6 peak_area 11.801600 peak_time 88.6000 final_area 0.000000
+theta 0.7 peak_area 5.273600 peak_time 45.8000 final_area 0.000000
+theta 0.8 peak_area 0.000000 peak_time 0.0000 final_area 0.000000

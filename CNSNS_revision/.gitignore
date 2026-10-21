@@ -1,0 +1,4 @@
+data/
+*.o
+sim
+__pycache__/

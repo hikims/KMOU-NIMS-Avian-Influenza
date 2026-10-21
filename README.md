@@ -6,6 +6,16 @@ This repository provides **C++ simulation code** for a spatial reaction–diffus
 
 ------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+
+## CNSNS revision (2026)
+
+The folder [`CNSNS_revision/`](CNSNS_revision/) contains the simulator, run scripts, analysis scripts and
+run summaries for the revised manuscript *Diffusion–Confinement Crossover in Nonlinear Spreading on Bounded
+Domains* (Kim & Kim, Communications in Nonlinear Science and Numerical Simulation, Ms. CNSNS-D-26-02308).
+It uses a corrected, mass-conserving time-stepping scheme and adds local and nonlocal-kernel transmission
+variants; see its own README. Release tag: `cnsns-r1`.
+
 ## Contents
 
 - [Quick start](#quick-start)
