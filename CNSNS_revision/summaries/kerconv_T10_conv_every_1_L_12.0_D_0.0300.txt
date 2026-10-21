@@ -1,0 +1,22 @@
+model kernel
+L 12
+D 0.03
+dx 0.02
+dt 0.0005
+T 10
+Nx 600
+r0 0.5
+eps 0.1
+k1 1
+massI_final 28.2950758598
+massS_final 115.7049316708
+maxI_final 0.9046596643
+PR_final 0.2937556187
+var_final 9.282512969170e-02
+theta 0.005 peak_area 80.659600 peak_time 10.0000 final_area 80.659600
+theta 0.01 peak_area 73.682000 peak_time 10.0000 final_area 73.682000
+theta 0.02 peak_area 66.653200 peak_time 10.0000 final_area 66.653200
+theta 0.05 peak_area 57.160400 peak_time 10.0000 final_area 57.160400
+theta 0.1 peak_area 49.600400 peak_time 10.0000 final_area 49.600400
+theta 0.2 peak_area 41.365200 peak_time 10.0000 final_area 41.365200
+theta 0.3 peak_area 35.930000 peak_time 10.0000 final_area 35.930000
