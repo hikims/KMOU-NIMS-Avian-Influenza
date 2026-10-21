@@ -314,7 +314,7 @@ for name, col, mk, T in (("local", "C0", "s", T_LOC), ("kernel", "C3", "^", T_KE
     Lc2 = [L for L in dcv if dcv[L][1] != 0]
     if Lc2: ax.plot(Lc2, [dcv[L][0] for L in Lc2], mk, mfc="w", mec=col, ms=5)
     if len(Lf_) >= 2: p_, c_, _ = powerfit(Lf_, Df_); ax.plot(Lline, c_ * Lline ** p_, "-", color=col, lw=1.2)
-ax.plot(Lline, Lline ** 2 / (8 * np.pi * 0.9 * T_LOC ** 2), "--", color="C0", lw=1.2, label=rf"$L^2/(8\pi k_1 S_0 T^2)$, $T = {T_LOC:g}$")
+ax.plot(Lline, Lline ** 2 / (8 * np.pi * 1.0 * T_LOC ** 2), "--", color="C0", lw=1.2, label=rf"$L^2/(8\pi k_1 S_b T^2)$, $T = {T_LOC:g}$")
 ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xlabel("Domain size $L$"); ax.set_ylabel("Crossover boundary $D_c(L)$"); ax.set_title("(c) Crossover boundaries", fontsize=9)
 ax.set_xticks(Ls); ax.set_xticklabels([f"{L:g}" for L in Ls]); ax.legend(fontsize=7); ax.grid(alpha=0.3, which="both")
 ax = axs[1, 1]; i = len(Ls) - 1; m = ~np.isnan(pk[i])

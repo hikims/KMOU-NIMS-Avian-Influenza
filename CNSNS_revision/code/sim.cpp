@@ -36,6 +36,7 @@
 #include <complex>
 #include <string>
 #include <vector>
+#include <memory>
 #include <sstream>
 #include <fstream>
 #include <algorithm>
@@ -157,6 +158,7 @@ int main(int argc, char** argv) {
     double r0 = 0.5, eps = 1.0, k1 = 1.0, init_i = 0.1, leng = 0.25;
     double out_every = 0.2;
     int conv_every = 10, threads = 0;
+    bool consistent_bc = false;
     std::vector<double> thetas = {0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3};
     std::vector<double> snaps;
 
@@ -178,6 +180,7 @@ int main(int argc, char** argv) {
         else if (k == "--out_every") out_every = atof(next().c_str());
         else if (k == "--conv_every") conv_every = atoi(next().c_str());
         else if (k == "--threads") threads = atoi(next().c_str());
+        else if (k == "--consistent_bc") consistent_bc = true;
         else if (k == "--thetas") thetas = parse_list(next());
         else if (k == "--snap") snaps = parse_list(next());
         else { fprintf(stderr, "unknown option %s\n", k.c_str()); return 1; }
@@ -360,8 +363,8 @@ int main(int argc, char** argv) {
         tbb::parallel_for(tbb::blocked_range<int>(0, Ny), [&](const tbb::blocked_range<int>& r) {
             std::vector<double> tmp(Nx);
             for (int j = r.begin(); j < r.end(); ++j) {
-                int jp = (j == Ny - 1) ? j - 1 : j + 1;
-                int jm = (j == 0) ? j + 1 : j - 1;
+                int jp = (j == Ny - 1) ? (consistent_bc ? j : j - 1) : j + 1;
+                int jm = (j == 0) ? (consistent_bc ? j : j + 1) : j - 1;
                 for (int i = 0; i < Nx; ++i) {
                     size_t q = (size_t)i * Ny + j;
                     In[q] = I[q] + ry * (I[(size_t)i * Ny + jp] - 2.0 * I[q] + I[(size_t)i * Ny + jm]) + 0.5 * dt * S[q] * F[q];
@@ -377,8 +380,8 @@ int main(int argc, char** argv) {
         tbb::parallel_for(tbb::blocked_range<int>(0, Nx), [&](const tbb::blocked_range<int>& r) {
             std::vector<double> tmp(Ny);
             for (int i = r.begin(); i < r.end(); ++i) {
-                int ip = (i == Nx - 1) ? i - 1 : i + 1;
-                int im = (i == 0) ? i + 1 : i - 1;
+                int ip = (i == Nx - 1) ? (consistent_bc ? i : i - 1) : i + 1;
+                int im = (i == 0) ? (consistent_bc ? i : i + 1) : i - 1;
                 for (int j = 0; j < Ny; ++j) {
                     size_t q = (size_t)i * Ny + j;
                     I[q] = In[q] + rx * (In[(size_t)ip * Ny + j] - 2.0 * In[q] + In[(size_t)im * Ny + j]) + 0.5 * dt * Sn[q] * Fn[q];

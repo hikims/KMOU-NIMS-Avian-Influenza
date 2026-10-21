@@ -34,7 +34,7 @@ maxpct = 0.0; labels_same = True
 for (L, D), rc in sorted(conv.items()):
     rf = fixed[(L, D)]; a_co, a_fi = rf.area(0.01)[-1], rc.area(0.01)[-1]; pct = 100 * abs(a_fi - a_co) / a_fi; maxpct = max(maxpct, pct)
     reg_c = classify(*rf.fractions(0.01, T_FIXED)); reg_f = classify(*rc.fractions(0.01, T_FIXED)); labels_same &= (reg_c == reg_f)
-    pos = "invasion (far from boundary)" if (L, D) == (18.0, 0.001) else ("just below $D_c$" if (L, D) == (15.0, 0.003) else ("just above $D_c$" if (L, D) == (14.0, 0.003) else ""))
+    pos = "far from boundary" if (L, D) == (18.0, 0.001) else ("just below $D_c$" if (L, D) == (15.0, 0.003) else ("just above $D_c$" if (L, D) == (14.0, 0.003) else ""))
     lines.append(f"{L:g} & {D:g} & {a_co:.2f} & {a_fi:.2f} & {pct:.2f} & {reg_c}" + ("" if reg_c == reg_f else f" / {reg_f}") + (f" ({pos})" if pos else "") + r" \\")
 lines += [r"\bottomrule", r"\end{tabular}"]; open(os.path.join(MS, "table_conv.tex"), "w").write("\n".join(lines) + "\n")
 N("convmaxpct", f"{maxpct:.2f}"); N("convN", str(len(conv))); print(f"conv: {len(conv)} cases, max {maxpct:.3f}%, labels same: {labels_same}")
@@ -94,10 +94,10 @@ for T in (15.0, 20.0, 25.0):
     horl[T] = res
 cT2 = [horl[T]["c"] * T * T for T in horl if "c" in horl[T]]
 N("locCTTmin", fmt_e(min(cT2))); N("locCTTmax", fmt_e(max(cT2)))
-N("locPredHalfArea", fmt_e(1.0 / (8 * np.pi * 0.9 * 25.0 ** 2))); N("locPredWall", fmt_e(1.0 / (16 * 0.9 * 25.0 ** 2)))
+N("locPredHalfArea", fmt_e(1.0 / (8 * np.pi * 1.0 * 25.0 ** 2))); N("locPredWall", fmt_e(1.0 / (16 * 1.0 * 25.0 ** 2)))
 # ratio measured / half-area prediction at T=25
 if "c" in horl[25.0]:
-    Lf_, Df_ = horl[25.0]["Lf"], horl[25.0]["Df"]; ratio = Df_ / (Lf_ ** 2 / (8 * np.pi * 0.9 * 625)); N("locRatioMin", f"{ratio.min():.2f}"); N("locRatioMax", f"{ratio.max():.2f}"); print("local measured / half-area prediction:", np.round(ratio, 2))
+    Lf_, Df_ = horl[25.0]["Lf"], horl[25.0]["Df"]; ratio = Df_ / (Lf_ ** 2 / (8 * np.pi * 1.0 * 625)); N("locRatioMin", f"{ratio.min():.2f}"); N("locRatioMax", f"{ratio.max():.2f}"); print("local measured / half-area prediction:", np.round(ratio, 2))
 
 # ---------- 6. coarse vs production at high thresholds, (15, 0.01) ----------
 obs = load_group("fixed_obs").get((15.0, 0.01)); co = coarse_base.get((15.0, 0.01))
@@ -106,7 +106,7 @@ if obs and co:
     for th in (0.3, 0.5, 0.6, 0.7, 0.8):
         lo = classify(*obs.fractions(th, T_FIXED)); lc = classify(*co.fractions(th, T_FIXED)); po, pc = obs.fractions(th, T_FIXED)[0], co.fractions(th, T_FIXED)[0]
         rows.append((th, lo, lc, po, pc)); print(f"  theta={th}: prod {lo} (peak {po:.3f})  coarse {lc} (peak {pc:.3f})")
-    N("hiThetaAgree", "all five" if all(r[1] == r[2] for r in rows) else "not all"); N("hiThetaPeakDev", f"{max(abs(r[3]-r[4]) for r in rows):.3f}")
+    N("hiThetaAgree", "all five" if all(r[1] == r[2] for r in rows) else "not all"); N("hiThetaPeakDev", fmt_e(max(abs(r[3]-r[4]) for r in rows)))
 
 # ---------- Fig 9 ----------
 fig, axs = plt.subplots(1, 2, figsize=(7.4, 3.5))
@@ -122,7 +122,7 @@ for T, mk in ((200.0, "s"), (300.0, "D"), (400.0, "o")):
     h = hor[T]; ax.plot(h["Lf"], h["Df"] * T, mk, color="k", ms=4, mfc="none" if T != 400 else "k", label=rf"hotspot, $T = {T:g}$")
 for T, mk in ((15.0, "s"), (20.0, "D"), (25.0, "o")):
     h = horl[T]; ax.plot(h["Lf"], h["Df"] * T * T, mk, color="C0", ms=4, mfc="none" if T != 25 else "C0", label=rf"local, $T = {T:g}$")
-ax.plot(Lline, Lline ** 2 / (8 * np.pi * 0.9), "--", color="C0", lw=1, label=r"$L^2/(8\pi k_1 S_0)$")
+ax.plot(Lline, Lline ** 2 / (8 * np.pi * 1.0), "--", color="C0", lw=1, label=r"$L^2/(8\pi k_1 S_b)$")
 ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xticks(Ls); ax.set_xticklabels([f"{L:g}" for L in Ls]); ax.set_xlabel("Domain size $L$"); ax.set_ylabel(r"$D_c\,T$ (hotspot),  $D_c\,T^2$ (local)")
 ax.set_title("(b) Horizon dependence", fontsize=9); ax.legend(fontsize=6.5, ncol=2); ax.grid(alpha=0.3, which="both")
 fig.tight_layout(); fig.savefig(os.path.join(MS, "fig4.eps")); fig.savefig(os.path.join(MS, "fig4.png")); plt.close(fig)

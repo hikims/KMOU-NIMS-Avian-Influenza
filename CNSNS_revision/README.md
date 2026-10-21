@@ -41,6 +41,11 @@ A_I(t; θ) for each θ), `summary.txt` (peak/final areas per θ), optional binar
 Defaults: `r0 = 0.5`, `eps = 1`, `k1 = 1`, `init_i = 0.1`, `leng = 0.25`, output every 0.2 time units,
 kernel refreshed every 10 steps (`--conv_every`).
 
+Boundary rows: by default the implicit sweeps use the `(-1, 1)` zero-flux rows and the explicit sweeps the mirrored
+neighbour (`(-2, 2)` rows); this is the production scheme of the paper, with a boundary mass residual below 1e-3.
+`--consistent_bc` uses `(-1, 1)` rows in both sweeps, which conserves the discrete mass to 1e-12; it is used only
+for the boundary-treatment check of Section 4.1 (`run_bc_check.py`).
+
 ## Reproducing the sweeps
 
 | script             | runs                                                                 | used for            |
@@ -48,12 +53,16 @@ kernel refreshed every 10 steps (`--conv_every`).
 | `run_sweep.py`     | hotspot 9×10 grid (dx 0.04, T 400); local & kernel 5×9 grids (dx 0.02, T 25); convergence (dx 0.02); long runs | Figs. 2, 5, 6, 8, 9, Table 1 |
 | `run_extra.py`     | hotspot grid at dx 0.08 with θ up to 0.8; (15, 0.01) with 12 thresholds | Figs. 3, 7          |
 | `run_extra2.py`    | more convergence cases; hotspot-size sensitivity (r0 = 0.25, 1.0; eps = 0.5); kernel refresh-period check | Table 1, Fig. 4     |
+| `run_bc_check.py`  | boundary-row comparison (mixed rows vs `--consistent_bc`, six pairs at dx 0.08); kernel refresh at T = 10 on both sides of the kernel boundary | Sec. 4.1            |
 | `analyze.py`       | classification (Eq. 26 of the paper), fits, Figs. 2, 3, 5–9, `numbers.tex`, `table_conv.tex` | all                 |
 | `analyze_extra.py` | convergence table, mass error, hotspot-size and horizon dependence, Fig. 4 | Sec. 4.1, 4.4       |
 
 The scripts write to `../data` relative to `code/`; `../manuscript` must exist for the figure output
 (create it or edit `MS` at the top of the analysis scripts). Total cost of all sweeps: about 4 hours on a
 32-core workstation.
+
+The front-speed reference for the local model uses the susceptible density ahead of the front, `S_b = 1`
+(`D_c = L^2 / (8 pi k1 S_b T^2)` for the half-area criterion).
 
 ## Run summaries
 
