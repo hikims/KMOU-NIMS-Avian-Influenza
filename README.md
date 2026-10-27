@@ -483,3 +483,7 @@ pip install numpy pandas matplotlib
 ## License
 
 Add your preferred license (e.g., MIT / BSD-3 / GPL-3.0) as `LICENSE`.
+
+## Maintainer
+
+Minsoo Kim (Korea Maritime and Ocean University), GitHub: [hikims](https://github.com/hikims).
