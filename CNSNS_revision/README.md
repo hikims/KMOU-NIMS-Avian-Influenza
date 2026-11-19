@@ -6,7 +6,11 @@ J.-H. Kim and M. Kim, *Communications in Nonlinear Science and Numerical Simulat
 | release    | manuscript version            | contents                                                        |
 |------------|-------------------------------|-----------------------------------------------------------------|
 | `cnsns-r1` | first revision (October 2026) | corrected simulator, sweeps and analysis of the first revision   |
-| `cnsns-r2` | second revision (November 2026) | all of the above, plus the free-space reference, the extended sweep, the additional checks, per-run summaries of every sweep, the time series of every run, and the before/after accounting of the correction |
+| `cnsns-r2.1` | second revision (November 2026) | all of the above, plus the free-space reference, the extended sweep, the additional checks, per-run summaries of every sweep, the time series of every run, and the before/after accounting of the correction |
+
+`cnsns-r2.1` supersedes `cnsns-r2`, which had the same code, summaries and time series; in `cnsns-r2.1` the console
+logs of the runs were removed from the time-series archives and two statements of this README on mass conservation
+were corrected.
 
 The simulator in the repository root (`Single_*`, `Multiple_*`) belongs to an earlier paper and is **not**
 the one used for the CNSNS manuscript.
@@ -64,8 +68,10 @@ position as fractions of the sides).
 
 Boundary rows: by default the implicit sweeps use the `(-1, 1)` zero-flux rows and the explicit sweeps the
 mirrored neighbour (`(-2, 2)` rows); this is the production scheme of the main sweep, with a boundary mass
-residual below 1e-3. `--consistent_bc` uses `(-1, 1)` rows in both sweeps and conserves the discrete mass to
-1e-12; all runs added in the second revision use it, and the main sweep was recomputed with it as a check.
+residual of about 1e-3 at most (largest value 1.04e-3). `--consistent_bc` uses `(-1, 1)` rows in both sweeps and
+conserves the discrete mass up to accumulated rounding error (at most 4e-11 in the runs of the paper). The extended
+sweep and the additional checks of the second revision use it, and the main sweep was recomputed with it as a check;
+the two reference runs at L = 40 (`ref2d`) use the production rows.
 
 ## Scripts
 
@@ -87,7 +93,8 @@ residual below 1e-3. `--consistent_bc` uses `(-1, 1)` rows in both sweeps and co
 The run scripts write to `../data` relative to `code/`; the analysis scripts read from there (the
 first-revision sweeps either in `../data` or in `../data/r1`) and write figures and numbers to `../figures`,
 `../manuscript` and `../supplementary` (create these folders). To use the archived time series instead of
-re-running, unpack `timeseries/*.tar.xz` in the folder that contains `code/`: they restore the `data/` tree.
+re-running, unpack `timeseries/*.tar.xz` in the folder that contains `code/`: they restore the `data/` tree. The archives hold the
+time series and summary of every run (the simulator's console logs are not included).
 Total cost of all sweeps: of the order of fifteen hours on a 32-core workstation.
 
 ## Classification rules (Eq. (29) of the second revision)
