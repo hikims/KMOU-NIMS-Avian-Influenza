@@ -4,7 +4,7 @@
 production resolution (observable comparison)."""
 import itertools, os, subprocess, time
 from concurrent.futures import ThreadPoolExecutor
-HERE = os.path.dirname(os.path.abspath(__file__)); SIM = os.path.join(HERE, "sim"); DATA = os.path.normpath(os.path.join(HERE, "..", "data"))
+HERE = os.path.dirname(os.path.abspath(__file__)); SIM = next((p for p in (os.path.join(HERE, "bin", "sim_new"), os.path.join(HERE, "bin", "sim"), os.path.join(HERE, "sim")) if os.path.exists(p)), os.path.join(HERE, "bin", "sim")); DATA = os.path.normpath(os.path.join(HERE, "..", "data"))
 TH = "0.005,0.01,0.02,0.05,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8"
 jobs = []
 out = os.path.join(DATA, "fixed_obs", "L_15.0_D_0.0100")

@@ -1,0 +1,24 @@
+\begin{tabular}{p{6.2cm}p{9.2cm}}
+\toprule
+Check & Result \\
+\midrule
+Main sweep recomputed with mass-conserving boundary rows (90 runs, production resolution) & mass error $\le 4\times 10^{-11}$; coverage changes by at most $0.006$ over 630 (run, threshold) pairs ($0.003$ at $\theta = 0.01$); $D_c(L)$ changes by at most $0.011\%$; $M_I(T)$ by at most $0.4\%$; one label changes, at $\theta = 0.3$ in the run $(L, D_I) = (10, 0.008)$, whose coverage is $0.501$ with the production rows (saturation) and $0.498$ with the mass-conserving rows (invasion); no label changes at $\theta = 0.01$ \\
+\addlinespace
+Coverage level $0.3$ and $0.7$ instead of $0.5$ (main sweep) & confined boundary within $0.1\%$ of the free-space level curve at level $0.3$; up to $5.3\%$ lower at level $0.7$, where the level set is close to the walls \\
+\addlinespace
+Horizon dependence of the homogenization crossover ($T' = 150, \dots, 400$, extended sweep) & $D_h T'$ at $T' = 200$ exceeds its value at $T' = 400$ by $19$ to $47\%$; with a delay, $D_h \approx 0.84\,(L - 3.5)^2/[\pi^2 (T' - 63)]$ describes 50 values with a mean deviation of $3\%$ (maximum $14\%$); without the delay the maximum deviation is $28\%$ \\
+\addlinespace
+Free-space control for the homogenization crossover: participation ratio of the free-space solution restricted to the square (extended grid) & reaches $0.9$ for $L \le 28$ at $2.0$ to $2.3$ times the confined $D_h$ ($L \le 24$; $3.0$ times at $L = 28$), and not within the sampled range $D_I \le 0.72$ for $L \ge 32$; factors $1.4$ to $1.5$ at level $0.8$ and $2.8$ to $3.5$ at level $0.95$; largest difference of participation ratio $0.15$ \\
+\addlinespace
+Off-centre source at $(L/4, L/4)$ and $(L/4, L/2)$, $L = 12, 16$ (56 runs) & $D_c$ is $1.3$ to $2.2$ times that of the centred source, because part of the free-space disk falls outside the square; the confined boundary lies $1.9$ to $4.5\%$ below the diffusivity at which the free-space solution, clipped by the square, covers half of it, and the wall effect at the boundary is $0.8$ to $2.4\%$ of the domain (centred source: at most $0.3\%$); at $L = 12$ the homogenization crossover is $4.1$ and $3.0$ times that of the centred source (point-release estimate: $3.2$ and $2.4$), and the free-space solution restricted to the square reaches the same participation ratio at $1.4$ and $1.3$ times these diffusivities (centred source: about $2$) \\
+\addlinespace
+Rectangles $L_x \times L_x/2$, $L_x = 12, 16, 20, 24$, centred source (80 runs) & $D_h$ is $0.68$ to $0.78$ times its value in the square of side $L_x$ (point-release estimate: $0.80$) and $4$ to $5$ times its value in the square of side $L_x/2$ ($L_x = 20, 24$), i.e.\ it is governed by the longer side; the coverage boundary lies $1.5$ to $2.4\%$ below the diffusivity at which the free-space solution, clipped by the rectangle, covers half of it, with a wall effect of $0.3$ to $0.7\%$ of the domain at the boundary \\
+\addlinespace
+Hotspot radius $r_0 = 0.25$, $0.5$, $1$ and the homogenization crossover ($L = 12, \dots, 28$; 150 runs) & $D_h$ changes by a factor of $1.08$ to $1.16$ ($r_0 = 0.25$) and $0.80$ to $0.89$ ($r_0 = 1$) relative to the baseline; fitted offsets $L_h = 3.1$, $2.9$, $3.5$ and prefactors $1.05$, $0.91$, $0.85$ \\
+\addlinespace
+Diffusivities beyond the extended sweep ($D_I$ up to $5.8$; $L = 44, 48, 56$; 18 runs) & $\mathrm{PR}(T)$ has a minimum of $0.79$, $0.74$ and $0.64$ near $D_I \approx 1.0$ and then tends to one, crossing $0.9$ at $D_I \approx 1.35$, $1.40$ and $1.48$; there $M_I(T) \le 1.4$ and the coverage at the horizon is zero; mass error $\le 6\times 10^{-13}$; with half the time step, and with half the grid spacing ($L = 44$, two diffusivities), $\mathrm{PR}(T)$ changes by at most $0.004$, $M_I(T)$ by at most $3.9\%$ and the crossing by at most $0.3\%$ \\
+\addlinespace
+Radial solver with $\Delta r$ and $\Delta t$ halved (5 diffusivities from $10^{-3}$ to $0.13$) & thresholded area changes by at most $0.061\%$, infected mass by at most $0.032\%$, participation ratio of the solution restricted to the square by at most $0.0005$ \\
+\addlinespace
+\bottomrule
+\end{tabular}

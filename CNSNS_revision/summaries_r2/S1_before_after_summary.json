@@ -1,0 +1,52 @@
+[
+ [
+  "Runs available / classified as saturation ($\\theta = 0.01$)",
+  "90 / 59",
+  "90 / 66"
+ ],
+ [
+  "Susceptible mass removed per unit infected mass gained",
+  "2.00--2.00",
+  "0.997--1.000"
+ ],
+ [
+  "Largest relative deviation of $\\sum (S+I)$ from its initial value over a run (a loss in the submitted code)",
+  "4.2--15.8\\%",
+  "$\\le 0.11\\%$"
+ ],
+ [
+  "Infected mass $M_I(T)$",
+  "13.5--15.8",
+  "27.0--31.6"
+ ],
+ [
+  "Maximum density $I_{\\max}(T)$",
+  "0.24--0.45",
+  "0.48--0.90"
+ ],
+ [
+  "Boundary $10^3 D_c$ at $L = 11$ / $14$ / $18$",
+  "1.27 / 3.47 / 8.86",
+  "1.09 / 2.77 / 6.67"
+ ],
+ [
+  "Power-law exponent of $D_c(L)$, $L = 11$--$18$",
+  "3.9",
+  "3.7"
+ ],
+ [
+  "Offset-quadratic fit: $L_0$ (max. deviation)",
+  "7.0 (10\\%)",
+  "6.5 (8\\%)"
+ ],
+ [
+  "Pure $c L^2$ fit: max. deviation (rounded up)",
+  "73\\%",
+  "60\\%"
+ ],
+ [
+  "Area exponent $\\alpha$, fit at $L = 18$ ($L = 15$)",
+  "0.52 (0.54)",
+  "0.56 (0.57)"
+ ]
+]

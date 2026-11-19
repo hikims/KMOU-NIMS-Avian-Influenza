@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper and this repository."
+title: "Code and data for: Coverage and Homogenization Crossovers in Nonlinear Spreading on Bounded Domains: Separating Diffusion, Normalization and Confinement"
+abstract: "Simulator, free-space reference solver, run scripts, analysis scripts, per-run summaries and time series for the susceptible-infected reaction-diffusion model with a localized transmission hotspot on bounded domains (folder CNSNS_revision; release cnsns-r2 corresponds to the second revision of manuscript CNSNS-D-26-02308). The repository root also holds the simulation code of an earlier study of the same group."
+authors:
+  - family-names: Kim
+    given-names: Jong-Ho
+    affiliation: "Department of Fundamental Research on Public Agenda, National Institute for Mathematical Sciences, Daejeon, Republic of Korea"
+  - family-names: Kim
+    given-names: Minsoo
+    affiliation: "Major of Data Science, Korea Maritime & Ocean University, Busan, Republic of Korea"
+version: "cnsns-r2"
+date-released: "2026-11-19"
+repository-code: "https://github.com/hikims/KMOU-NIMS-Avian-Influenza"
+keywords:
+  - reaction-diffusion
+  - threshold-defined observables
+  - free-space reference
+  - geometric confinement
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Kim
+      given-names: Jong-Ho
+    - family-names: Kim
+      given-names: Minsoo
+  title: "Coverage and Homogenization Crossovers in Nonlinear Spreading on Bounded Domains: Separating Diffusion, Normalization and Confinement"
+  journal: "Communications in Nonlinear Science and Numerical Simulation"
+  status: submitted
+  year: 2026

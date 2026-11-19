@@ -1,6 +1,7 @@
 // =====================================================================
 //  sim.cpp  --  revised simulator for the confined SI reaction-diffusion
-//               model (CNSNS revision, October 2026)
+//               model (CNSNS revision, October 2026; options --Ly, --xc,
+//               --yc added for the second revision, November 2026)
 //
 //  Two transmission models are supported:
 //
@@ -21,13 +22,15 @@
 //  ADI sweep so that S + I is conserved (the submitted code applied a full
 //  dt to S in each half sweep, i.e. S decayed at twice the stated rate).
 //
-//  Build:  g++ -std=c++17 -O3 -I/opt/homebrew/include -L/opt/homebrew/lib
-//              sim.cpp -ltbb -o sim
-//  Usage:  ./sim --model fixed --L 15 --D 0.01 --out OUTDIR [options]
+//  Build:  mkdir -p bin && g++ -std=c++17 -O3 -I/opt/homebrew/include
+//              -L/opt/homebrew/lib sim.cpp -ltbb -o bin/sim
+//  Usage:  bin/sim --model fixed --L 15 --D 0.01 --out OUTDIR [options]
 //  Options (defaults):
 //     --dx 0.04  --dt 0.001  --T 400  --r0 0.5  --eps 1.0  --k1 1
 //     --init_i 0.1  --leng 0.25   --thetas 0.005,0.01,0.02,0.05,0.1,0.2,0.3
 //     --snap t1,t2,...   --out_every 0.2   --conv_every 10   --threads 0
+//     --consistent_bc (mass-conserving boundary rows)
+//     --Ly <side>  rectangle (0,L) x (0,Ly), hotspot model only;  --xc --yc  source position as fractions of L, Ly (default 0.5)
 // =====================================================================
 #include <cstdio>
 #include <cstdlib>
@@ -155,6 +158,7 @@ struct Tridiag {
 int main(int argc, char** argv) {
     std::string model = "fixed", out = "out";
     double L = 15.0, D = 0.01, dx = 0.04, dt = 0.001, T = 400.0;
+    double Ly_in = -1.0, xc = 0.5, yc = 0.5;   // optional: rectangle side Ly (default L), source position as fractions of (L, Ly)
     double r0 = 0.5, eps = 1.0, k1 = 1.0, init_i = 0.1, leng = 0.25;
     double out_every = 0.2;
     int conv_every = 10, threads = 0;
@@ -168,6 +172,9 @@ int main(int argc, char** argv) {
         if (k == "--model") model = next();
         else if (k == "--out") out = next();
         else if (k == "--L") L = atof(next().c_str());
+        else if (k == "--Ly") Ly_in = atof(next().c_str());
+        else if (k == "--xc") xc = atof(next().c_str());
+        else if (k == "--yc") yc = atof(next().c_str());
         else if (k == "--D") D = atof(next().c_str());
         else if (k == "--dx") dx = atof(next().c_str());
         else if (k == "--dt") dt = atof(next().c_str());
@@ -190,13 +197,15 @@ int main(int argc, char** argv) {
     std::unique_ptr<tbb::global_control> gc;
     if (threads > 0) gc.reset(new tbb::global_control(tbb::global_control::max_allowed_parallelism, threads));
 
-    const int Nx = (int)llround(L / dx), Ny = Nx;
+    const double Ly = (Ly_in > 0) ? Ly_in : L;
+    if (model == "kernel" && Ly != L) { fprintf(stderr, "kernel model: square domains only\n"); return 1; }
+    const int Nx = (int)llround(L / dx), Ny = (int)llround(Ly / dx);
     const double dy = dx;
-    const double area_domain = L * L;
+    const double area_domain = L * Ly;
     const size_t NN = (size_t)Nx * Ny;
     const long nsteps = (long)llround(T / dt);
     const int out_stride = std::max(1, (int)llround(out_every / dt));
-    const double cx = 0.5 * L, cy = 0.5 * L;
+    const double cx = xc * L, cy = yc * Ly;
 
     mkdir_p(out);
 
@@ -299,8 +308,8 @@ int main(int argc, char** argv) {
     // ---- output files ----
     std::string ts_file = out + "/timeseries.txt";
     FILE* fts = fopen(ts_file.c_str(), "w");
-    fprintf(fts, "# model=%s L=%g D=%g dx=%g dt=%g T=%g Nx=%d r0=%g eps=%g k1=%g init_i=%g leng=%g\n",
-            model.c_str(), L, D, dx, dt, T, Nx, r0, eps, k1, init_i, leng);
+    fprintf(fts, "# model=%s L=%g D=%g dx=%g dt=%g T=%g Nx=%d r0=%g eps=%g k1=%g init_i=%g leng=%g Ly=%g Ny=%d xc=%g yc=%g\n",
+            model.c_str(), L, D, dx, dt, T, Nx, r0, eps, k1, init_i, leng, Ly, Ny, xc, yc);
     fprintf(fts, "# thetas:"); for (double th : thetas) fprintf(fts, " %g", th); fprintf(fts, "\n");
     fprintf(fts, "# t massI massS maxI centerI PR var");
     for (double th : thetas) fprintf(fts, " area(%g)", th);
@@ -339,7 +348,7 @@ int main(int argc, char** argv) {
         PR = (s2 > 0) ? (mI * mI) / (area_domain * s2) : 0.0;
         var = s2 / area_domain - (mI / area_domain) * (mI / area_domain);
         FILE* f = fopen(ts_file.c_str(), "a");
-        fprintf(f, "%.6f %.10f %.10f %.10f %.10f %.10f %.12e", t, mI, mS, mx, I[(size_t)(Nx / 2) * Ny + Ny / 2], PR, var);
+        fprintf(f, "%.6f %.10f %.10f %.10f %.10f %.10f %.12e", t, mI, mS, mx, I[(size_t)std::min(Nx - 1, (int)(cx / dx)) * Ny + std::min(Ny - 1, (int)(cy / dx))], PR, var);
         for (size_t a = 0; a < nth; ++a) {
             double ar = cnt[a] * dx * dy;
             fprintf(f, " %.6f", ar);
@@ -401,7 +410,7 @@ int main(int argc, char** argv) {
     // ---- summary ----
     std::string sum_file = out + "/summary.txt";
     FILE* fsum = fopen(sum_file.c_str(), "w");
-    fprintf(fsum, "model %s\nL %g\nD %g\ndx %g\ndt %g\nT %g\nNx %d\nr0 %g\neps %g\nk1 %g\n", model.c_str(), L, D, dx, dt, T, Nx, r0, eps, k1);
+    fprintf(fsum, "model %s\nL %g\nD %g\ndx %g\ndt %g\nT %g\nNx %d\nr0 %g\neps %g\nk1 %g\nLy %g\nxc %g\nyc %g\n", model.c_str(), L, D, dx, dt, T, Nx, r0, eps, k1, Ly, xc, yc);
     fprintf(fsum, "massI_final %.10f\nmassS_final %.10f\nmaxI_final %.10f\nPR_final %.10f\nvar_final %.12e\n", massI, massS, maxI, PR, var);
     for (size_t a = 0; a < nth; ++a)
         fprintf(fsum, "theta %g peak_area %.6f peak_time %.4f final_area %.6f\n", thetas[a], peak_area[a], peak_time[a], final_area[a]);

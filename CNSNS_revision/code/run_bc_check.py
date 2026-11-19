@@ -14,7 +14,7 @@ Compare final areas / masses with:  python3 run_bc_check.py --report
 """
 import os, subprocess, sys, itertools
 from concurrent.futures import ThreadPoolExecutor
-HERE = os.path.dirname(os.path.abspath(__file__)); SIM = os.path.join(HERE, "bin", "sim"); DATA = os.path.normpath(os.path.join(HERE, "..", "data"))
+HERE = os.path.dirname(os.path.abspath(__file__)); SIM = next((p for p in (os.path.join(HERE, "bin", "sim_new"), os.path.join(HERE, "bin", "sim"), os.path.join(HERE, "sim")) if os.path.exists(p)), os.path.join(HERE, "bin", "sim")); DATA = os.path.normpath(os.path.join(HERE, "..", "data"))
 PAIRS = [(10, 0.01), (18, 0.001), (15, 0.003), (15, 0.004), (14, 0.002), (14, 0.003)]
 TH = "0.005,0.01,0.02,0.05,0.1,0.2,0.3"
 

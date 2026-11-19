@@ -15,7 +15,7 @@ import argparse, itertools, os, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SIM = os.path.join(HERE, "sim")
+SIM = next((p for p in (os.path.join(HERE, "bin", "sim_new"), os.path.join(HERE, "bin", "sim"), os.path.join(HERE, "sim")) if os.path.exists(p)), os.path.join(HERE, "bin", "sim"))   # simulator built from sim.cpp
 DATA = os.path.normpath(os.path.join(HERE, "..", "data"))
 
 ap = argparse.ArgumentParser()
